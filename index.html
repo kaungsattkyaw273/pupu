@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ပလုပလု အရပ်ရှည်စေမဲ့နည်း</title>
+  <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0a0814;
+      --text-color: #e6e6fa; /* Lavender white */
+      --gold-main: #FFD700;
+      --gold-shadow-dark: #b8860b;
+      --glow-color: rgba(255, 215, 0, 0.3);
+      --card-bg: rgba(18, 16, 32, 0.7);
+      --card-border-glow: #4a4a8a;
+    }
+
+    body {
+      font-family: 'Padauk', sans-serif;
+      margin: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    /* --- Background Effects --- */
+    .background-effects {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: -1;
+        pointer-events: none;
+    }
+    .star-bg {
+        position: absolute;
+        background-color: white;
+        border-radius: 50%;
+        animation: twinkle linear infinite;
+    }
+    .hearts-container {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: -1;
+    }
+    .heart {
+        position: absolute;
+        width: 20px; height: 20px;
+        background-color: rgba(255, 105, 180, 0.5);
+        animation: floatUp linear forwards;
+    }
+    .heart::before, .heart::after {
+        content: ''; position: absolute;
+        width: 20px; height: 20px;
+        border-radius: 50%;
+        background-color: inherit;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: 10px; }
+
+
+    /* --- Header with Scrolling Title --- */
+    header {
+        width: 100%;
+        padding: 1.5rem 0;
+        overflow: hidden;
+        background: rgba(0,0,0,0.2);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    .marquee-content {
+        display: flex;
+        align-items: center;
+        width: max-content;
+        animation: marquee-scroll 25s linear infinite;
+    }
+    .scrolling-text {
+      font-weight: 700;
+      font-size: clamp(2rem, 8vmin, 3rem);
+      color: var(--gold-main);
+      margin: 0 2rem;
+      text-shadow: 
+        1px 1px 0px var(--gold-shadow-dark),
+        2px 2px 0px var(--gold-shadow-dark),
+        3px 3px 0px var(--gold-shadow-dark),
+        4px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+    .celestial-object {
+        position: relative;
+        margin: 0 2rem;
+        animation: bobbing 4s ease-in-out infinite;
+    }
+    .moon {
+        width: 40px; height: 40px;
+        border-radius: 50%;
+        box-shadow: 10px 10px 0 0 var(--gold-main);
+        filter: drop-shadow(0 0 8px var(--glow-color));
+    }
+    .flying-star {
+        width: 30px; height: 30px;
+        position: relative;
+        animation: spin 8s linear infinite;
+    }
+    .flying-star::before {
+        content: '★';
+        position: absolute; top: 0; left: 0;
+        font-size: 30px; line-height: 1;
+        color: var(--gold-main);
+        filter: drop-shadow(0 0 5px var(--glow-color));
+    }
+
+    /* --- Main Content --- */
+    main {
+        padding: 3rem 1rem;
+        display: flex;
+        justify-content: center;
+    }
+    .letter-container {
+      max-width: 700px;
+      width: 100%;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 2rem 3rem;
+      border-radius: 20px;
+      border: 1px solid var(--card-border-glow);
+      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    }
+    .section-title {
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: var(--gold-main);
+        margin-top: 2rem;
+        margin-bottom: 1.5rem;
+        text-shadow:
+          1px 1px 0px var(--gold-shadow-dark),
+          2px 2px 5px rgba(0, 0, 0, 0.4);
+    }
+    .message-body ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    .message-body li {
+      font-size: 1.1rem;
+      line-height: 1.9;
+      margin-bottom: 1rem;
+      padding-left: 2rem;
+      position: relative;
+      color: var(--text-color);
+    }
+    .message-body li::before {
+      content: '✦';
+      color: var(--gold-main);
+      position: absolute; left: 0; top: 5px;
+      font-size: 1.2rem;
+      text-shadow: 0 0 8px var(--glow-color);
+    }
+    .message-body strong {
+      color: #fff;
+      font-weight: 700;
+    }
+    hr {
+      border: 0;
+      height: 1px;
+      background-image: linear-gradient(to right, transparent, var(--card-border-glow), transparent);
+      margin: 3rem 0;
+    }
+    .closing {
+      font-size: 1.2rem;
+      text-align: center;
+      margin-top: 2rem;
+      font-weight: 700;
+      color: var(--gold-main);
+      animation: pulse 3s infinite ease-in-out;
+    }
+
+    /* Keyframe Animations */
+    @keyframes twinkle { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+    @keyframes floatUp { to { transform: translateY(-110vh) rotate(600deg); opacity: 0; } }
+    @keyframes marquee-scroll { from { transform: translateX(0%); } to { transform: translateX(-50%); } }
+    @keyframes bobbing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); text-shadow: 1px 1px 5px var(--glow-color); }
+        50% { opacity: 0.8; transform: scale(1.05); text-shadow: 1px 1px 10px var(--glow-color); }
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 2rem 1rem; }
+      .letter-container { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="background-effects">
+      <div class="star-background" id="star-background"></div>
+      <div class="hearts-container" id="hearts-container"></div>
+  </div>
+
+  <header>
+    <div class="marquee-content">
+        <div class="celestial-object"><div class="moon"></div></div>
+        <div class="celestial-object"><div class="flying-star"></div></div>
+        <h1 class="scrolling-text">ပလုပလု အရပ်ရှည်စေမဲ့နည်း</h1>
+        <div class="celestial-object" style="animation-delay: -2s;"><div class="flying-star"></div></div>
+
+        <div class="celestial-object"><div class="moon"></div></div>
+        <div class="celestial-object"><div class="flying-star"></div></div>
+        <h1 class="scrolling-text">ပလုပလု အရပ်ရှည်စေမဲ့နည်း</h1>
+        <div class="celestial-object" style="animation-delay: -2s;"><div class="flying-star"></div></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="letter-container">
+        <div class="message-body">
+            <div>
+                <h2 class="section-title">လေ့ကျင့်ခန်းများ</h2>
+                <ul>
+                    <li><strong>ဆွဲဆန့်ခြင်း (Stretching):</strong> ခန္ဓာကိုယ်ကို ဆွဲဆန့်သော လေ့ကျင့်ခန်းများက အရိုးအဆစ်များကို ပြော့ပြောင်းစေပြီး အရပ်ရှည်ထွက်လာရန် ကူညီပေးသည်။</li>
+                    <li><strong>ခုန်ခြင်း (Jumping):</strong> ကြိုးခုန်ခြင်း၊ ခုန်ပေါက်ကစားခြင်းက ခြေထောက်နှင့် ကျောရိုးရှိ အရိုးများကို လှုံ့ဆော်ပေးသည်။</li>
+                    <li><strong>ရေကူးခြင်း (Swimming):</strong> ရေကူးခြင်းသည် ခန္ဓာကိုယ်တစ်ခုလုံးရှိ ကြွက်သားများနှင့် အရိုးအဆစ်များကို ဆွဲဆန့်ပေးသဖြင့် အကောင်းဆုံးလေ့ကျင့်ခန်းတစ်ခု ဖြစ်သည်။</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h2 class="section-title">အစားအစာများ</h2>
+                <ul>
+                    <li><strong>ပရိုတင်း (Protein):</strong> ကြွက်သားနှင့် တစ်ရှူးများ ကြီးထွားရန်အတွက် ကြက်ဥ၊ နို့၊ ဒိန်ချဉ်၊ ပဲအမျိုးမျိုး၊ ငါးနှင့် အသားများ စားသုံးပါ။</li>
+                    <li><strong>ကယ်လ်စီယမ် (Calcium):</strong> အရိုးများသန်မာရန် နို့နှင့် နို့ထွက်ပစ္စည်းများ၊ အရွက်စိမ်းများ၊ ငါးသေးသေးလေးများ စားသုံးပါ။</li>
+                    <li><strong>ဗီတာမင် ဒီ (Vitamin D):</strong> ကယ်လ်စီယမ်စုပ်ယူမှုကို အားကောင်းစေရန် နေရောင်ခြည်ခံခြင်း၊ ငါးကြီးဆီ စားသုံးခြင်းတို့ ပြုလုပ်ပါ။</li>
+                </ul>
+            </div>
+          </div>
+          <hr>
+          <p class="closing">ပလုပလု အရပ်အမြန်ဆုံးရှည်ပါစေ</p>
+    </div>
+  </main>
+  
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const heartsContainer = document.getElementById('hearts-container');
+        const starBackground = document.getElementById('star-background');
+
+        // --- Create Hearts ---
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.animationDuration = `${Math.random() * 7 + 8}s`; // 8 to 15 seconds
+            const size = Math.random() * 15 + 10;
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+            heart.style.opacity = Math.random() * 0.6 + 0.2;
+            heartsContainer.appendChild(heart);
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+        setInterval(createHeart, 400);
+
+        // --- Create Background Stars ---
+        function createStars() {
+            const starCount = 100;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star-bg');
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 7}s`;
+                star.style.animationDuration = `${Math.random() * 5 + 3}s`;
+                starBackground.appendChild(star);
+            }
+        }
+        createStars();
+    });
+  </script>
+
+</body>
+</html>
